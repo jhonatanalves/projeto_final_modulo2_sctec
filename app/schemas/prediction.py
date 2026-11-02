@@ -40,6 +40,7 @@ class PredictRequest(BaseModel):
     """Dados de um cliente para estimar a probabilidade de churn."""
 
     model_config = ConfigDict(
+        extra="forbid",  # campo desconhecido no JSON -> 422 (evita erros de digitação silenciosos)
         json_schema_extra={"examples": [EXEMPLO_ENTRADA]},
     )
 
