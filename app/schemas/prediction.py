@@ -71,3 +71,27 @@ class PredictRequest(BaseModel):
     contract: TipoContrato = Field(..., description="Tipo de contrato.")
     paperless_billing: SimNao = Field(..., description="Fatura digital.")
     payment_method: FormaPagamento = Field(..., description="Forma de pagamento.")
+
+class PredictResponse(BaseModel):
+    """Resultado da predição devolvido pela API."""
+
+    customer_id: str | None = Field(default=None, description="Mesmo identificador enviado na entrada.")
+    churn: bool = Field(..., description="true se o modelo prevê cancelamento.")
+    churn_probability: float = Field(
+        ..., ge=0, le=1, description="Probabilidade estimada de churn (0 a 1).",
+    )
+    risk_level: Literal["baixo", "médio", "alto"] = Field(
+        ..., description="Faixa de risco: baixo (< 0,30), médio (< 0,60) ou alto.",
+    )
+    model_version: str = Field(..., min_length=1, description="Versão do modelo que gerou a predição.")
+
+
+class HealthResponse(BaseModel):
+    """Estado operacional do serviço."""
+
+    status: Literal["ok", "degraded"] = Field(
+        ..., description="ok = pronto para predizer; degraded = API no ar, mas sem modelo.",
+    )
+    model_loaded: bool = Field(..., description="Indica se o modelo está carregado na memória RAM.")
+    model_version: str | None = Field(default=None, description="Versão do modelo em memória.")
+    api_version: str = Field(..., description="Versão da API.")
