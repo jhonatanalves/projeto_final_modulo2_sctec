@@ -1,11 +1,19 @@
 """Rotas de inferência do modelo."""
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 
-from app.schemas.prediction import PredictRequest, PredictResponse
+from app.schemas.prediction import ErrorResponse, PredictRequest, PredictResponse
 from app.services import model_service
 from app.services.model_service import BusinessRuleError
 
 router = APIRouter(prefix="/v1", tags=["Predição"])
+
+# Respostas documentadas no Swagger (/docs) além do 200
+ERROR_RESPONSES = {
+    400: {"model": ErrorResponse, "description": "Dados válidos, mas incoerentes entre si (regra de negócio)."},
+    422: {"description": "JSON fora do contrato: tipo errado, valor fora da faixa, campo faltando ou extra."},
+    500: {"model": ErrorResponse, "description": "Erro interno inesperado."},
+    503: {"model": ErrorResponse, "description": "Modelo não carregado na memória."},
+}
 
 
 def get_model_bundle(request: Request) -> dict:
@@ -22,7 +30,12 @@ def get_model_bundle(request: Request) -> dict:
     return bundle
 
 
-@router.post("/predict", response_model=PredictResponse, summary="Prevê o churn de um cliente")
+@router.post(
+    "/predict",
+    response_model=PredictResponse,
+    responses=ERROR_RESPONSES,
+    summary="Prevê o churn de um cliente",
+)
 def predict(payload: PredictRequest, bundle: dict = Depends(get_model_bundle)) -> PredictResponse:
     """Recebe os dados já validados pelo Pydantic e delega a inferência ao service.
 
