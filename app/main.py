@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.core import config
+from app.routers import health, prediction
 from app.services import model_service
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -48,3 +49,6 @@ app = FastAPI(
     description=DESCRIPTION,
     lifespan=lifespan,
 )
+
+app.include_router(health.router)
+app.include_router(prediction.router)
