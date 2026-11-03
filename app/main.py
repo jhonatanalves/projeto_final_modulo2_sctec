@@ -33,4 +33,18 @@ async def lifespan(app: FastAPI):
     logger.info("Aplicação finalizada.")
 
 
-app = FastAPI(lifespan=lifespan)
+DESCRIPTION = """
+API REST que estima a probabilidade de **churn** (cancelamento) de clientes de telecom.
+
+* `GET /health` — verifica se o serviço está ativo e se o modelo está em memória.
+* `POST /v1/predict` — recebe os dados de um cliente e devolve a predição.
+
+Modelo: pipeline scikit-learn treinado na base *Telco Customer Churn* (Kaggle/IBM).
+"""
+
+app = FastAPI(
+    title=config.API_TITLE,
+    version=config.API_VERSION,
+    description=DESCRIPTION,
+    lifespan=lifespan,
+)
