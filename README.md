@@ -2,7 +2,7 @@
 
 API REST que estima a probabilidade de um cliente de telecom **cancelar o contrato (churn)**, devolvendo a probabilidade, a classe prevista e uma faixa de risco para que o time de retenção aja antes do cancelamento.
 
-Projeto Final do Módulo 2 do curso de **Desenvolvimento de IA para Análise Preditiva** do programa **SCTEC**. Desenvolvido para consolidar a passagem de um modelo de Machine Learning do notebook para produção: treinamento reprodutível, serialização do pipeline completo e exposição como microsserviço com FastAPI, contratos validados pelo Pydantic, ciclo de vida otimizado, tratamento padronizado de erros e testes automatizados.
+Este é o Projeto Final do Módulo 2 do curso de **Desenvolvimento de IA para Análise Preditiva** do programa **SCTEC**. Desenvolvido para consolidar a passagem de um modelo de Machine Learning do notebook para produção: treinamento reprodutível, serialização do pipeline completo e exposição como microsserviço com FastAPI, contratos validados pelo Pydantic, ciclo de vida otimizado, tratamento padronizado de erros e testes automatizados.
 
 ## 1. Problema
 
